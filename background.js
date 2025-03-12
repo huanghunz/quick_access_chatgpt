@@ -16,7 +16,7 @@ chrome.windows.onRemoved.addListener((windowId) => {
   }
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener((info) => {
   if (info.menuItemId === "open-chatgpt") {
     // Check if window already exists
     if (chatGPTWindowId !== null) {
@@ -37,14 +37,33 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 function createNewWindow() {
-  chrome.windows.create({
-    url: 'https://chat.openai.com',
-    type: 'popup',
-    width: 400,
-    height: 600,
-    left: 100,
-    top: 100
-  }, (window) => {
-    chatGPTWindowId = window.id;
+  const width = 400;
+  const height = 600;
+
+  chrome.system.display.getInfo((displays) => {
+    const primaryDisplay = displays[0];
+    const screenWidth = primaryDisplay.workArea.width;
+    const screenHeight = primaryDisplay.workArea.height;
+
+    // Position the window in the center of the screen
+    let left = parseInt((screenWidth - width) / 2);
+    let top = parseInt((screenHeight - height) / 2);
+
+    // Ensure window stays within screen bounds
+    left = Math.max(0, Math.min(left, screenWidth - width));
+    top = Math.max(0, Math.min(top, screenHeight - height));
+
+    //console.log('Window position:', { left, top, screenWidth, screenHeight });
+
+    chrome.windows.create({
+      url: 'https://chat.openai.com',
+      type: 'popup',
+      width: width,
+      height: height,
+      left: left,
+      top: top
+    }, (window) => {
+      chatGPTWindowId = window.id;
+    });
   });
 }
