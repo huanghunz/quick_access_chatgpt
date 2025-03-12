@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "open-chatgpt",
-    title: "Ask ChatGPT",
+    title: "Open ChatGPT",
     contexts: ["all"]
   });
 });
