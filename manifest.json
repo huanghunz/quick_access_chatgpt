@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Quick ChatGPT",
+  "version": "1.0",
+  "description": "Quick access to ChatGPT via context menu",
+  "permissions": [
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
